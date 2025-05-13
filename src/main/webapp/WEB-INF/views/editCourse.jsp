@@ -6,12 +6,16 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Subject Added</title>
+<title>Update Course</title>
 </head>
 <body>
 	
-	<form action="courseAdded" method="post">
+	<form action="saveUpdatedCourse" method="post">
 		<table border="2">
+			<tr>
+				<td>Course Id:</td>
+				<td><input type="text" name="c_id" value="${course.c_id}" readonly="readonly"></td>
+			</tr>
 			<tr>
 				<td>Course Name:</td>
 				<td><input type="text" name="course_name"></td>

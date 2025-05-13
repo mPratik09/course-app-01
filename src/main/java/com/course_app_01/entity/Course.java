@@ -11,8 +11,24 @@ public class Course
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long c_id;
+
+//	@NotNull(message = "Course name nust not be null")
+//	@NotNull
 	private String course_name;
 	private String description;
+
+	public Course()
+	{
+		super();
+	}
+
+	public Course(long c_id, String course_name, String description)
+	{
+		super();
+		this.c_id = c_id;
+		this.course_name = course_name;
+		this.description = description;
+	}
 
 	public long getC_id()
 	{

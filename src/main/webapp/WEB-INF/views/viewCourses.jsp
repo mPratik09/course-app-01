@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Course List</title>
+</head>
+<body>
+
+	<form action="courseAdded" method="post">
+		<table border="2">
+			<tr>
+				<th>Course Id</th>
+				<th>Course</th>
+				<th>Description</th>
+				<th>Update</th>
+				<th>Delete</th>
+			</tr>
+
+			<c:forEach items="${courseList}" var="courses">
+				<tr>
+					<td>${courses.c_id}</td>
+					<td>${courses.course_name}</td>
+					<td>${courses.description}</td>
+					<td><a href="updateCourse?c_id=${courses.c_id}">Update</a></td>
+					<td><a href="deleteCourse?c_id=${courses.c_id}">Delete</a></td>
+				</tr>
+			</c:forEach>
+	
+		</table>
+	</form>
+
+</body>
+</html>
+
+
+<%-- 
+				<tr>
+					<td>${courses.c_id}</td>
+					<td>${courses.course_name}</td>
+					<td>${courses.description}</td>
+					<td><a href="updateCourse?c_id=${courses.c_id}">Update</a></td>
+					<td><a href="deleteCourse?c_id=${courses.c_id}"
+						onclick="return confirm('Are you sure you want to delete this course?');">Delete</a></td>
+				</tr>
+--%>
