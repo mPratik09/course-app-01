@@ -9,38 +9,50 @@
 </head>
 <body>
 
-		<table border="2">
+	<table border="2">
+		<tr>
+			<th>Course Id</th>
+			<th>Course</th>
+			<th>Description</th>
+			<th>Update</th>
+			<th>Delete</th>
+		</tr>
+
+		<c:forEach items="${courseList}" var="courses">
 			<tr>
-				<th>Course Id</th>
-		 		<th>Course</th>
-				<th>Description</th>
-				<th>Update</th>
-				<th>Delete</th>
+				<td>${courses.c_id}</td>
+				<td>${courses.course_name}</td>
+				<td>${courses.description}</td>
+<%-- 			
+				<td><a href="courses/${courses.c_id}">Update</a></td>
+				<td><a href="courses/${courses.c_id}">Delete</a></td>
+--%>
+				<td>
+					<form
+						action="${pageContext.request.contextPath}/courses/${courses.c_id}/update"
+						method="post">
+						<input type="hidden" name="_method" value="post" />
+						<input type="submit" value="Update">
+					</form>
+				</td>
+
+				<td>
+					<form
+						action="${pageContext.request.contextPath}/courses/${courses.c_id}/delete"
+						method="post">
+						<input type="hidden" name="_method" value="delete" />
+						<input type="submit" value="Delete"
+							onclick="return confirm('Are you sure you want to delete this course?');" />
+					</form>
+				</td>
+
 			</tr>
+		</c:forEach>
 
-			<c:forEach items="${courseList}" var="courses">
-				<tr>
-					<td>${courses.c_id}</td>
-					<td>${courses.course_name}</td>
-					<td>${courses.description}</td>
-					<td><a href="updateCourse?c_id=${courses.c_id}">Update</a></td>
-					<td><a href="deleteCourse?c_id=${courses.c_id}">Delete</a></td>
-				</tr>
-			</c:forEach>
-	
-		</table>
+	</table>
 
+	<c:if test="${not empty msg}">
+		<p style="color: green;">${msg}</p>
+	</c:if>
 </body>
 </html>
-
-
-<%-- 
-				<tr>
-					<td>${courses.c_id}</td>
-					<td>${courses.course_name}</td>
-					<td>${courses.description}</td>
-					<td><a href="updateCourse?c_id=${courses.c_id}">Update</a></td>
-					<td><a href="deleteCourse?c_id=${courses.c_id}"
-						onclick="return confirm('Are you sure you want to delete this course?');">Delete</a></td>
-				</tr>
---%>

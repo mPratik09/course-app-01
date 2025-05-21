@@ -9,7 +9,7 @@
 <title>Subject Added</title>
 </head>
 <body>
-	<form action="courseAdded" method="post">
+	<form action="courses" method="post">
 		<table border="2">
 			<tr>
 				<td>Course Name:</td>
@@ -24,5 +24,10 @@
 			</tr>
 		</table>
 	</form>
+	
+	<c:if test="${not empty msg}">
+    	<p style="color: green;">${msg}</p>
+	</c:if>
+	
 </body>
 </html>

@@ -2,13 +2,15 @@ package com.course_app_01.controller;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.course_app_01.dto.CourseDto;
 import com.course_app_01.entity.Course;
@@ -25,21 +27,21 @@ public class CourseController
 	@Autowired
 	private CourseServices courseServices;
 
-	@RequestMapping("/addCourse")
+	@GetMapping("/course")
 	public String addSubject()
 	{
 		return "addCourse";
 	}
 
-	@RequestMapping("/courseAdded")
-	public String addSubjectPage(@ModelAttribute CourseDto courseDto)
+	@PostMapping("/courses")
+	public String addSubjectPage(@ModelAttribute CourseDto courseDto, RedirectAttributes redirectAttributes)
 	{
 		courseServices.addCourse(courseDto);
-//		code to be added for message passing (user added successfully)
-		return "addCourse";
+		redirectAttributes.addFlashAttribute("msg", "course added successflly");
+		return "redirect:course";
 	}
 
-	@RequestMapping("/viewAllCourses")
+	@GetMapping("/courses")
 	public String viewCourse(@ModelAttribute Course course, ModelMap modelMap)
 	{
 		List<Course> courseList = courseRepo.findAll();
@@ -47,31 +49,30 @@ public class CourseController
 		return "viewCourses";
 	}
 
-	@RequestMapping("/updateCourse")
-	public String upadteCourse(@PathParam("c_id") Long c_id, ModelMap modelMap)
+	@PostMapping("/courses/{c_id}/update")
+	public String updateCourse(@PathVariable("c_id") Long c_id, ModelMap modelMap)
 	{
 		CourseDto course = courseServices.getCourse(c_id);
 		modelMap.addAttribute("course", course);
 		return "editCourse";
 	}
 
-	@RequestMapping("/saveUpdatedCourse")
-	public String saveUpdatedCourse(@ModelAttribute CourseDto courseDto, ModelMap modelMap)
+	@PostMapping("/saveUpdatedCourse")
+	public String saveUpdatedCourse(@ModelAttribute CourseDto courseDto, ModelMap modelMap,
+			RedirectAttributes redirectAttributes)
 	{
 		List<CourseDto> courseList = courseServices.updateCourse(courseDto);
 		modelMap.addAttribute("courseList", courseList);
-		return "viewCourses";
+		redirectAttributes.addFlashAttribute("msg", "course updated successflly with id " + courseDto.getC_id());
+		return "redirect:/courses";
 	}
 
-	@RequestMapping("/deleteCourse")
-	public String deleteCourse(@PathParam("c_id") Long c_id, ModelMap modelMap)
+	@DeleteMapping("/courses/{c_id}/delete")
+	public String deleteCourse(@PathVariable("c_id") Long c_id, ModelMap modelMap)
 	{
-
 		courseServices.deleteCourse(c_id);
-		List<Course> courseList = courseRepo.findAll();
-		modelMap.addAttribute("courseList", courseList);
-
-		return "viewCourses";
+		modelMap.addAttribute("courseList", courseRepo.findAll());
+		return "redirect:/courses";
 	}
 
 }
