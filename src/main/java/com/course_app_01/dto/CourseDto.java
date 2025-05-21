@@ -1,29 +1,18 @@
-package com.course_app_01.entity;
+package com.course_app_01.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Course
+public class CourseDto
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long c_id;
-
-//	@NotNull(message = "Course name nust not be null")
-//	@NotNull
 	private String course_name;
 	private String description;
 
 //	Required for form binding
-	public Course()
+	public CourseDto()
 	{
 		super();
 	}
 
-	public Course(long c_id, String course_name, String description)
+	public CourseDto(long c_id, String course_name, String description)
 	{
 		super();
 		this.c_id = c_id;
@@ -64,7 +53,7 @@ public class Course
 	@Override
 	public String toString()
 	{
-		return "Course [c_id=" + c_id + ", course_name=" + course_name + ", description=" + description + "]";
+		return "CourseDto [c_id=" + c_id + ", course_name=" + course_name + ", description=" + description + "]";
 	}
 
 }

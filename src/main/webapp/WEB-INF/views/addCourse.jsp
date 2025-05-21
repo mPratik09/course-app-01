@@ -9,7 +9,6 @@
 <title>Subject Added</title>
 </head>
 <body>
-	
 	<form action="courseAdded" method="post">
 		<table border="2">
 			<tr>
@@ -25,8 +24,5 @@
 			</tr>
 		</table>
 	</form>
-
-</body>
-	
 </body>
 </html>

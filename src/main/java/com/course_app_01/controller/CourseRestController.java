@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.course_app_01.dto.CourseDto;
 import com.course_app_01.entity.Course;
 import com.course_app_01.repo.CourseRepo;
+import com.course_app_01.services.CourseServices;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -18,12 +20,21 @@ public class CourseRestController
 {
 
 	@Autowired
-	CourseRepo courseRepo;
+	private CourseRepo courseRepo;
 
-	@RequestMapping("/viewCourses")
-	public List<Course> getAllCourses()
+	@Autowired
+	private CourseServices courseServices;
+
+	@RequestMapping("/addCourse")
+	public CourseDto addCourse(@RequestBody CourseDto courseDto)
 	{
-		return courseRepo.findAll();
+		return courseServices.addCourse(courseDto);
+	}
+
+	@RequestMapping("/viewAllCourses")
+	public List<CourseDto> viewAllCourses()
+	{
+		return courseServices.viewAllCourses();
 	}
 
 	@RequestMapping("/getCourse/{c_id}")
@@ -35,19 +46,18 @@ public class CourseRestController
 	}
 
 	@RequestMapping("/updateCourse/{c_id}")
-	public Course updateCourse(@PathVariable("c_id") Long cId, @RequestBody Course course)
+	public List<CourseDto> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
 	{
+		courseDto.setC_id(cId);
+		return courseServices.updateCourse(courseDto);
 
-		Optional<Course> findById = courseRepo.findById(cId);
+	}
 
-		Course existingCourse = findById.get();
-
-		existingCourse.setCourse_name(course.getCourse_name());
-		existingCourse.setDescription(course.getDescription());
-
-		courseRepo.save(existingCourse);
-
-		return course;
+	@RequestMapping("/deleteCourse/{c_id}")
+	public List<Course> deleteCourse(@PathVariable("c_id") Long cId)
+	{
+		courseRepo.deleteById(cId);
+		return courseRepo.findAll();
 	}
 
 }

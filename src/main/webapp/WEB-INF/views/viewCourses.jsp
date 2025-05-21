@@ -9,11 +9,10 @@
 </head>
 <body>
 
-	<form action="courseAdded" method="post">
 		<table border="2">
 			<tr>
 				<th>Course Id</th>
-				<th>Course</th>
+		 		<th>Course</th>
 				<th>Description</th>
 				<th>Update</th>
 				<th>Delete</th>
@@ -30,7 +29,6 @@
 			</c:forEach>
 	
 		</table>
-	</form>
 
 </body>
 </html>
