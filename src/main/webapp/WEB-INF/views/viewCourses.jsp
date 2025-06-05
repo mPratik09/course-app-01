@@ -31,7 +31,7 @@
 					<form
 						action="${pageContext.request.contextPath}/courses/${courses.c_id}/update"
 						method="post">
-						<input type="hidden" name="_method" value="post" />
+						<input type="hidden" name="_method" value="put" />
 						<input type="submit" value="Update">
 					</form>
 				</td>
