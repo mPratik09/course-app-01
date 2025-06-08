@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: course_app
     volumes:
       - course_vol:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d
+      - ../sql:/docker-entrypoint-initdb.d
 
 volumes:
   course_vol:
