@@ -3,8 +3,13 @@ package com.course_app_01.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +23,8 @@ import com.course_app_01.services.CourseServices;
 @RequestMapping("/api/courses")
 public class CourseRestController
 {
+
+	private static final Logger log = LoggerFactory.getLogger(CourseRestController.class);
 
 	@Autowired
 	private CourseRepo courseRepo;
@@ -45,12 +52,19 @@ public class CourseRestController
 		return course;
 	}
 
-	@RequestMapping("/updateCourse/{c_id}")
-	public List<CourseDto> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
+	@PutMapping("/updateCourse/{c_id}")
+	public ResponseEntity<?> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
 	{
-		courseDto.setC_id(cId);
-		return courseServices.updateCourse(courseDto);
 
+		if (!courseRepo.existsById(cId))
+		{
+			log.error("Course with ID " + cId + " not found.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course with ID " + cId + " not found.");
+		}
+
+		courseDto.setC_id(cId);
+		List<CourseDto> updatedCourses = courseServices.updateCourse(courseDto);
+		return ResponseEntity.ok(updatedCourses);
 	}
 
 	@RequestMapping("/deleteCourse/{c_id}")
