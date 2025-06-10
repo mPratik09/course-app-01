@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +52,7 @@ public class CourseRestController
 		return course;
 	}
 
-	@PutMapping("/updateCourse/{c_id}")
+	@PatchMapping("/updateCourse/{c_id}")
 	public ResponseEntity<?> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
 	{
 
@@ -63,8 +63,11 @@ public class CourseRestController
 		}
 
 		courseDto.setC_id(cId);
-		List<CourseDto> updatedCourses = courseServices.updateCourse(courseDto);
-		return ResponseEntity.ok(updatedCourses);
+		courseServices.updateCourse(courseDto);
+
+		List<CourseDto> coursesList = courseServices.viewAllCourses();
+
+		return ResponseEntity.ok(coursesList);
 	}
 
 	@RequestMapping("/deleteCourse/{c_id}")

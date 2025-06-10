@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,18 +44,24 @@ public class CourseServicesImpl implements CourseServices
 	}
 
 	@Override
-	public List<CourseDto> updateCourse(CourseDto courseDto)
+	public Course updateCourse(CourseDto courseDto)
 	{
-		Course course = CourseMapper.courseMapper(courseDto);
-		courseRepo.save(course);
-		List<CourseDto> courseList = new ArrayList<>();
+		Course course = courseRepo.findById(courseDto.getC_id())
+				.orElseThrow(() -> new EntityNotFoundException("Not found"));
 
-		for (Course course2 : courseRepo.findAll())
+		if (courseDto.getCourse_name() != null)
 		{
-			CourseDto courseDtoMapper = CourseMapper.courseDtoMapper(course2);
-			courseList.add(courseDtoMapper);
+			course.setCourse_name(courseDto.getCourse_name());
 		}
-		return courseList;
+
+		if (courseDto.getDescription() != null)
+		{
+			course.setDescription(courseDto.getDescription());
+		}
+
+		Course updatedCourse = courseRepo.save(course);
+
+		return updatedCourse;
 	}
 
 	@Override
