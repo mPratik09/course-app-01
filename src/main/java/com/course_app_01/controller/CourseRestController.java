@@ -2,8 +2,6 @@ package com.course_app_01.controller;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,19 +47,8 @@ public class CourseRestController
 	@GetMapping("/getCourse/{c_id}")
 	public ResponseEntity<?> getCourseById(@PathVariable("c_id") Long cId)
 	{
-//		CourseDto courseDto = courseServices.getCourse(cId);
-//		return ResponseEntity.ok(courseDto);
-
-		try
-		{
-			CourseDto courseDto = courseServices.getCourse(cId);
-			return ResponseEntity.ok(courseDto);
-		} catch (EntityNotFoundException ex)
-		{
-			// Log error if needed
-			log.error("Errorrrr: " + ex);
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-		}
+		CourseDto courseDto = courseServices.getCourse(cId);
+		return ResponseEntity.ok(courseDto);
 
 	}
 

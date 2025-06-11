@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.course_app_01.dto.CourseDto;
 import com.course_app_01.entity.Course;
+import com.course_app_01.exception.ResourceNotFoundException;
 import com.course_app_01.mapper.CourseMapper;
 import com.course_app_01.repo.CourseRepo;
 
@@ -38,7 +39,7 @@ public class CourseServicesImpl implements CourseServices
 	public CourseDto getCourse(Long cId)
 	{
 		Course course = courseRepo.findById(cId)
-				.orElseThrow(() -> new EntityNotFoundException("ddfdfCourse with ID " + cId + " not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Course with ID " + cId + " not found"));
 
 		return CourseMapper.courseDtoMapper(course);
 	}
