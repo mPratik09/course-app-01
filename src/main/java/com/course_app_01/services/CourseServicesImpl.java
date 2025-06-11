@@ -2,7 +2,6 @@ package com.course_app_01.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -38,8 +37,9 @@ public class CourseServicesImpl implements CourseServices
 	@Override
 	public CourseDto getCourse(Long cId)
 	{
-		Optional<Course> findById = courseRepo.findById(cId);
-		Course course = findById.get();
+		Course course = courseRepo.findById(cId)
+				.orElseThrow(() -> new EntityNotFoundException("ddfdfCourse with ID " + cId + " not found"));
+
 		return CourseMapper.courseDtoMapper(course);
 	}
 

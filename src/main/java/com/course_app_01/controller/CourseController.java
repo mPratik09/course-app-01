@@ -50,9 +50,9 @@ public class CourseController
 	}
 
 	@PostMapping("/courses/{c_id}/update")
-	public String updateCourse(@PathVariable("c_id") Long c_id, ModelMap modelMap)
+	public String updateCourse(@PathVariable("c_id") Long cId, ModelMap modelMap)
 	{
-		CourseDto course = courseServices.getCourse(c_id);
+		CourseDto course = courseServices.getCourse(cId);
 		modelMap.addAttribute("course", course);
 		return "editCourse";
 	}

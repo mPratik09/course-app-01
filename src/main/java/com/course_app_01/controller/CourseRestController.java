@@ -1,13 +1,15 @@
 package com.course_app_01.controller;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,12 +46,23 @@ public class CourseRestController
 		return courseServices.viewAllCourses();
 	}
 
-	@RequestMapping("/getCourse/{c_id}")
-	public Course getCourse(@PathVariable("c_id") Long cId)
+	@GetMapping("/getCourse/{c_id}")
+	public ResponseEntity<?> getCourseById(@PathVariable("c_id") Long cId)
 	{
-		Optional<Course> findById = courseRepo.findById(cId);
-		Course course = findById.get();
-		return course;
+//		CourseDto courseDto = courseServices.getCourse(cId);
+//		return ResponseEntity.ok(courseDto);
+
+		try
+		{
+			CourseDto courseDto = courseServices.getCourse(cId);
+			return ResponseEntity.ok(courseDto);
+		} catch (EntityNotFoundException ex)
+		{
+			// Log error if needed
+			log.error("Errorrrr: " + ex);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+		}
+
 	}
 
 	@PatchMapping("/updateCourse/{c_id}")
