@@ -8,6 +8,8 @@ import com.course_app_01.entity.Course;
 public interface CourseServices
 {
 
+	Course isExist(Long cId, String str);
+
 	CourseDto addCourse(CourseDto courseDto);
 
 	void deleteCourse(Long cId);

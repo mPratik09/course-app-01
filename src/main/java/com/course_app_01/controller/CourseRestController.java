@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -49,19 +48,11 @@ public class CourseRestController
 	{
 		CourseDto courseDto = courseServices.getCourse(cId);
 		return ResponseEntity.ok(courseDto);
-
 	}
 
 	@PatchMapping("/updateCourse/{c_id}")
 	public ResponseEntity<?> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
 	{
-
-		if (!courseRepo.existsById(cId))
-		{
-			log.error("Course with ID " + cId + " not found.");
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course with ID " + cId + " not found.");
-		}
-
 		courseDto.setC_id(cId);
 		courseServices.updateCourse(courseDto);
 
@@ -73,7 +64,7 @@ public class CourseRestController
 	@RequestMapping("/deleteCourse/{c_id}")
 	public List<Course> deleteCourse(@PathVariable("c_id") Long cId)
 	{
-		courseRepo.deleteById(cId);
+		courseServices.deleteCourse(cId);
 		return courseRepo.findAll();
 	}
 
