@@ -16,7 +16,7 @@ public interface CourseServices
 
 	CourseDto getCourse(Long cId);
 
-	Course updateCourse(CourseDto courseDto);
+	CourseDto updateCourse(CourseDto courseDto);
 
 	List<CourseDto> viewAllCourses();
 

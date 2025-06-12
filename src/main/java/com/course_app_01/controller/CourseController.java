@@ -61,7 +61,7 @@ public class CourseController
 	public String saveUpdatedCourse(@ModelAttribute CourseDto courseDto, ModelMap modelMap,
 			RedirectAttributes redirectAttributes)
 	{
-		Course updateCourse = courseServices.updateCourse(courseDto);
+		courseServices.updateCourse(courseDto);
 		redirectAttributes.addFlashAttribute("msg", "course updated successflly with id " + courseDto.getC_id());
 		return "redirect:/courses";
 	}

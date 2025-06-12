@@ -24,7 +24,6 @@ public class CourseServicesImpl implements CourseServices
 	{
 		Course course = courseRepo.findById(cId).orElseThrow(() -> new ResourceNotFoundException(
 				"Course with ID " + cId + " not found to perform " + str + " course operation."));
-
 		return course;
 	}
 
@@ -54,7 +53,7 @@ public class CourseServicesImpl implements CourseServices
 	}
 
 	@Override
-	public Course updateCourse(CourseDto courseDto)
+	public CourseDto updateCourse(CourseDto courseDto)
 	{
 		String str = "update";
 		Course course = isExist(courseDto.getC_id(), str);
@@ -71,7 +70,7 @@ public class CourseServicesImpl implements CourseServices
 
 		Course updatedCourse = courseRepo.save(course);
 
-		return updatedCourse;
+		return CourseMapper.courseDtoMapper(updatedCourse);
 	}
 
 	@Override

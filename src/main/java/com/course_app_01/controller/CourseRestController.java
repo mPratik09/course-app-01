@@ -1,11 +1,14 @@
 package com.course_app_01.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.course_app_01.dto.CourseDto;
-import com.course_app_01.entity.Course;
 import com.course_app_01.repo.CourseRepo;
 import com.course_app_01.services.CourseServices;
 
@@ -44,28 +46,31 @@ public class CourseRestController
 	}
 
 	@GetMapping("/getCourse/{c_id}")
-	public ResponseEntity<?> getCourseById(@PathVariable("c_id") Long cId)
+	public ResponseEntity<CourseDto> getCourseById(@PathVariable("c_id") Long cId)
 	{
 		CourseDto courseDto = courseServices.getCourse(cId);
 		return ResponseEntity.ok(courseDto);
 	}
 
 	@PatchMapping("/updateCourse/{c_id}")
-	public ResponseEntity<?> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
+	public ResponseEntity<CourseDto> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
 	{
 		courseDto.setC_id(cId);
-		courseServices.updateCourse(courseDto);
+		CourseDto updatedCourse = courseServices.updateCourse(courseDto);
 
-		List<CourseDto> coursesList = courseServices.viewAllCourses();
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "Course updated successfully.");
+		response.put("data", updatedCourse);
 
-		return ResponseEntity.ok(coursesList);
+		return ResponseEntity.ok(updatedCourse);
 	}
 
-	@RequestMapping("/deleteCourse/{c_id}")
-	public List<Course> deleteCourse(@PathVariable("c_id") Long cId)
+	@DeleteMapping("/deleteCourse/{c_id}")
+	public ResponseEntity<String> deleteCourse(@PathVariable("c_id") Long cId)
 	{
 		courseServices.deleteCourse(cId);
-		return courseRepo.findAll();
+		log.info("Course with ID " + cId + " deleted successfully.");
+		return ResponseEntity.ok("Course with ID " + cId + " deleted successfully.");
 	}
 
 }
