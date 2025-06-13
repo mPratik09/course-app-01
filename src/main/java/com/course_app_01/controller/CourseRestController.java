@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.course_app_01.dto.CourseDto;
-import com.course_app_01.repo.CourseRepo;
 import com.course_app_01.services.CourseServices;
 
 @RestController
@@ -28,32 +28,47 @@ public class CourseRestController
 	private static final Logger log = LoggerFactory.getLogger(CourseRestController.class);
 
 	@Autowired
-	private CourseRepo courseRepo;
-
-	@Autowired
 	private CourseServices courseServices;
 
-	@RequestMapping("/addCourse")
-	public CourseDto addCourse(@RequestBody CourseDto courseDto)
+	@PostMapping("")
+	public ResponseEntity<Map<String, Object>> addCourse(@RequestBody CourseDto courseDto)
 	{
-		return courseServices.addCourse(courseDto);
+		CourseDto addedCourse = courseServices.addCourse(courseDto);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "Course added successfully.");
+		response.put("data", addedCourse);
+
+		return ResponseEntity.ok(response);
 	}
 
-	@RequestMapping("/viewAllCourses")
-	public List<CourseDto> viewAllCourses()
+	@GetMapping("")
+	public ResponseEntity<Map<String, Object>> viewAllCourses()
 	{
-		return courseServices.viewAllCourses();
+		List<CourseDto> courseList = courseServices.viewAllCourses();
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "All courses fetched successfully.");
+		response.put("data", courseList);
+
+		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/getCourse/{c_id}")
-	public ResponseEntity<CourseDto> getCourseById(@PathVariable("c_id") Long cId)
+	@GetMapping("/{c_id}")
+	public ResponseEntity<Map<String, Object>> getCourseById(@PathVariable("c_id") Long cId)
 	{
 		CourseDto courseDto = courseServices.getCourse(cId);
-		return ResponseEntity.ok(courseDto);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("message", "Course with id " + cId);
+		response.put("data", courseDto);
+
+		return ResponseEntity.ok(response);
 	}
 
-	@PatchMapping("/updateCourse/{c_id}")
-	public ResponseEntity<CourseDto> updateCourse(@PathVariable("c_id") Long cId, @RequestBody CourseDto courseDto)
+	@PatchMapping("/{c_id}")
+	public ResponseEntity<Map<String, Object>> updateCourse(@PathVariable("c_id") Long cId,
+			@RequestBody CourseDto courseDto)
 	{
 		courseDto.setC_id(cId);
 		CourseDto updatedCourse = courseServices.updateCourse(courseDto);
@@ -62,10 +77,10 @@ public class CourseRestController
 		response.put("message", "Course updated successfully.");
 		response.put("data", updatedCourse);
 
-		return ResponseEntity.ok(updatedCourse);
+		return ResponseEntity.ok(response);
 	}
 
-	@DeleteMapping("/deleteCourse/{c_id}")
+	@DeleteMapping("/{c_id}")
 	public ResponseEntity<String> deleteCourse(@PathVariable("c_id") Long cId)
 	{
 		courseServices.deleteCourse(cId);
